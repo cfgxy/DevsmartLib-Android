@@ -390,11 +390,15 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 	}
 
   public synchronized void scrollTo(int x) {
+    mScroller.abortAnimation();
+    requestLayout();
     mScroller.startScroll(mNextX, 0, x - mNextX, 0);
     requestLayout();
   }
 
   public synchronized void scrollBy(int x) {
+    mScroller.abortAnimation();
+    requestLayout();
     mScroller.startScroll(mNextX, 0, x, 0);
     requestLayout();
   }
