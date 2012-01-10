@@ -170,11 +170,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 			int bottom = child.getBottom();
 			viewRect.set(left, top, right, bottom);
 
-			
-
-		
-
-			if (viewRect.contains(0, 0)) {
+			if (viewRect.contains(2, 2)) {
 				return mLeftViewIndex + 1 + i;
 			}
 		}
@@ -253,6 +249,12 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 		if (mNextX >= mMaxX) {
 			mNextX = mMaxX;
 			mScroller.forceFinished(true);
+		}
+		
+		if(mNextX == 0) {
+		  mNextX = 1;
+		} else if(mNextX == mMaxX) {
+		  mNextX = mMaxX - 1;
 		}
 
 		int dx = mCurrentX - mNextX;
@@ -401,6 +403,11 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     requestLayout();
     mScroller.startScroll(mNextX, 0, x, 0);
     requestLayout();
+  }
+  
+  public int getNextX()
+  {
+    return mNextX;
   }
 
 	@Override
