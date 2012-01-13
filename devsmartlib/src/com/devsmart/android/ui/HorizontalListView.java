@@ -46,6 +46,9 @@ import android.widget.Scroller;
 import com.devsmart.android.R;
 
 public class HorizontalListView extends AdapterView<ListAdapter> {
+  public static final int POSITION_START = 0;
+  public static final int POSITION_MIDDLE = 1;
+  public static final int POSITION_END = 2;
 
 	public boolean mAlwaysOverrideTouch = true;
 	protected ListAdapter mAdapter;
@@ -64,6 +67,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 	private OnItemSelectedListener mOnItemSelected;
 	private OnItemClickListener mOnItemClicked;
 	private OnItemLongClickListener mOnItemLongClicked;
+  private OnScrollListener mOnScrollListener;
 	private boolean mDataChanged = false;
 
 	public HorizontalListView(Context context, AttributeSet attrs) {
@@ -72,7 +76,6 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.HorizontalListView, 0, 0);
     mItemWidth = a.getDimensionPixelSize(R.styleable.HorizontalListView_itemWidth, mItemWidth);
     mItemHeight = a.getDimensionPixelSize(R.styleable.HorizontalListView_itemHeight, mItemHeight);
-
 		
 		initView();
 	}
@@ -150,6 +153,10 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 		mAdapter = adapter;
 		mAdapter.registerDataSetObserver(mDataObserver);
 		reset();
+	}
+	
+	public void setOnScrollListener(OnScrollListener scrollListener) {
+	  mOnScrollListener = scrollListener;
 	}
 
 	private synchronized void reset() {
@@ -242,19 +249,16 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 			mNextX = scrollx;
 		}
 
+    int position = POSITION_MIDDLE;
 		if (mNextX <= 0) {
 			mNextX = 0;
+      position = POSITION_START;
 			mScroller.forceFinished(true);
 		}
 		if (mNextX >= mMaxX) {
 			mNextX = mMaxX;
+      position = POSITION_END;
 			mScroller.forceFinished(true);
-		}
-		
-		if(mNextX == 0) {
-		  mNextX = 1;
-		} else if(mNextX == mMaxX) {
-		  mNextX = mMaxX - 1;
 		}
 
 		int dx = mCurrentX - mNextX;
@@ -273,6 +277,10 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 				}
 			}, 10);
 
+		}
+		
+		if(mOnScrollListener != null) {
+		  mOnScrollListener.onScroll(mNextX, position);
 		}
 	}
 
@@ -504,4 +512,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
 	};
 
+	public static interface OnScrollListener {
+	  public void onScroll(int nextX, int position);
+	}
 }
