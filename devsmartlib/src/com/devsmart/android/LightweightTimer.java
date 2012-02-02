@@ -7,7 +7,8 @@ public class LightweightTimer {
 	private Handler mHandler = new Handler();
 	private Runnable mOnTickCallback = null;
 	private long mInterval;
-	private boolean mRunning = false;
+  private boolean mRunning = false;
+  private boolean mTaskRunning = false;
 	
 	public LightweightTimer(Runnable r, long millisec) {
 		setOnTick(r);
@@ -38,11 +39,18 @@ public class LightweightTimer {
 		mHandler.removeCallbacks(mOnTick);
 	}
 	
+	public void runOnce() {
+	  if(mTaskRunning) return;
+	  mTaskRunning = true;
+	  mOnTickCallback.run();
+	  mTaskRunning = false;
+	}
+	
 	private Runnable mOnTick = new Runnable() {
 		@Override
 		public void run() {
 			if(mOnTickCallback != null){
-				mOnTickCallback.run();
+				runOnce();
 				if(mRunning){
 					start();
 				}
