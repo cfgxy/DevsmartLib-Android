@@ -47,7 +47,6 @@ public class LightweightTimer {
 	}
 	
 	private Runnable mOnTick = new Runnable() {
-		@Override
 		public void run() {
 			if(mOnTickCallback != null){
 				runOnce();

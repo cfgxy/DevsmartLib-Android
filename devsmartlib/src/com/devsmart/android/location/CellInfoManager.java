@@ -2,11 +2,13 @@ package com.devsmart.android.location;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+
 import android.content.Context;
 import android.telephony.CellLocation;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
+import android.util.Log;
 
 public class CellInfoManager {  
   
@@ -25,7 +27,6 @@ public class CellInfoManager {
   public static ArrayList<CellInfo> getCellIDInfo(Context mContext){  
     TelephonyManager manager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
     CellLocation location = manager.getCellLocation();
-    
     
     ArrayList<CellInfo> CellID = new ArrayList<CellInfo>();  
     CellInfo cell = null;

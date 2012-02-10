@@ -271,7 +271,6 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
 		if (!mScroller.isFinished()) {
 		  postDelayed(new Runnable() {
-				@Override
 				public void run() {
 					requestLayout();
 				}

@@ -65,7 +65,6 @@ public class IOUtils {
 		public Handler mHandler = new Handler();
 		
 		private Runnable mOnFinished = new Runnable() {
-			@Override
 			public void run() {
 				onFinished();
 			}

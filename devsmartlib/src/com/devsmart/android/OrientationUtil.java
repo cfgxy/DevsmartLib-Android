@@ -51,13 +51,11 @@ public class OrientationUtil implements SensorEventListener {
 		stop();
 	}
 
-	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void onSensorChanged(SensorEvent event) {
 		float azimuth = event.values[0];     // azimuth
 		float pitch = event.values[1];     // pitch

@@ -41,7 +41,6 @@ public class ServiceBinder<T extends IInterface> {
 	
 	private ServiceConnection mServiceConnection = new ServiceConnection() {
 
-		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			try {
 				Method asInterface = null;
@@ -64,7 +63,6 @@ public class ServiceBinder<T extends IInterface> {
 			
 		}
 
-		@Override
 		public void onServiceDisconnected(ComponentName name) {
 			// TODO Auto-generated method stub
 			

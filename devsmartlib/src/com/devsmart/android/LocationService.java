@@ -40,59 +40,48 @@ public class LocationService extends Service {
 
 	ILocationService.Stub mService = new ILocationService.Stub() {
 
-		@Override
 		public Location getBestLocation() throws RemoteException {
 			return mBestLocation;
 		}
 
-    @Override
     public String getAddress() throws RemoteException {
       return mAddress;
     }
 
-    @Override
     public void requestGsmLocation() throws RemoteException {
       LocationService.this.requestGsmLocation();
     }
 
-    @Override
     public void stop() throws RemoteException {
       started = false;
       mLocationManager.removeUpdates(mLocationListener);
     }
 
-    @Override
     public void start() throws RemoteException {
       doStart();
     }
 
-    @Override
     public Location getMarsLocation() throws RemoteException {
       return mMarsLocation;
     }
 
-    @Override
     public String getLocationCode() throws RemoteException {
       return mLocationCode;
     }
-
-    @Override
+    
     public String getMarsLocationCode() throws RemoteException {
       return mMarsLocationCode;
     }
 
-    @Override
     public boolean isRunning() throws RemoteException {
       return started;
     }
 
-    @Override
     public void pause() throws RemoteException {
       started = false;
       mLocationManager.removeUpdates(mLocationListener);
     }
 
-    @Override
     public void resume() throws RemoteException {
       started = true;
       mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
@@ -141,25 +130,21 @@ public class LocationService extends Service {
 
 	private LocationListener mLocationListener = new LocationListener() {
 
-		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 			// TODO Auto-generated method stub
 
 		}
 
-		@Override
 		public void onProviderEnabled(String provider) {
 			// TODO Auto-generated method stub
 
 		}
 
-		@Override
 		public void onProviderDisabled(String provider) {
 			// TODO Auto-generated method stub
 
 		}
 
-		@Override
 		public void onLocationChanged(Location location) {
 			if(isBetterLocation(location, mBestLocation)){
 				mBestLocation = location;
@@ -274,7 +259,6 @@ public class LocationService extends Service {
     
     new Thread(new Runnable() {
 
-      @Override
       public void run() {
         DefaultHttpClient client = new DefaultHttpClient();
         JSONObject jo = null;
@@ -310,7 +294,6 @@ public class LocationService extends Service {
 
     new Thread(new Runnable() {
 
-      @Override
       public void run() {
         DefaultHttpClient client = new DefaultHttpClient();
         JSONObject params = new JSONObject();
@@ -398,7 +381,6 @@ public class LocationService extends Service {
 
     new Thread(new Runnable() {
 
-      @Override
       public void run() {
         DefaultHttpClient client = new DefaultHttpClient();
         JSONObject params = new JSONObject();
