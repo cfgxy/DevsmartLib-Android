@@ -218,6 +218,8 @@ public class LocationService extends Service {
 	
 
   public static JSONObject toJSON(Location location) {
+    if(location == null) return null;
+    
     JSONObject loc = new JSONObject();
     loc.put("provider", location.getProvider());
     loc.put("lat", location.getLatitude());
