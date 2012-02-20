@@ -292,11 +292,12 @@ public class LocationService extends Service {
 	private void requestGsmLocation() {
     Log.d("LocationService", "requestGsmLocation");
 
-    final HttpPost post = new HttpPost("http://www.google.com/loc/json");
 
     new Thread(new Runnable() {
 
       public void run() {
+        HttpPost post = new HttpPost("http://www.google.com/loc/json");
+        
         DefaultHttpClient client = new DefaultHttpClient();
         JSONObject params = new JSONObject();
         if(!prepareGsmParams(params)) return;
@@ -379,11 +380,12 @@ public class LocationService extends Service {
     Log.d("LocationService", "requestAddress");
     
     final JSONObject loc = loc1;
-    final HttpPost post = new HttpPost("http://www.google.com/loc/json");
 
     new Thread(new Runnable() {
 
       public void run() {
+        HttpPost post = new HttpPost("http://www.google.com/loc/json");
+        
         DefaultHttpClient client = new DefaultHttpClient();
         JSONObject params = new JSONObject();
         
