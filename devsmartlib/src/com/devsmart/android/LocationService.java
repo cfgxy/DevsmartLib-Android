@@ -276,11 +276,11 @@ public class LocationService extends Service {
         mMarsLocation = toLocation(loc);
         mMarsLocation.setLatitude(((Number)jo.get("lat")).doubleValue());
         mMarsLocation.setLongitude(((Number)jo.get("lng")).doubleValue());
-        requestAddress(toJSON(mMarsLocation));
         try {
           mMarsLocationCode = Base64.encodeToString(toJSON(mMarsLocation).toJSONString().getBytes("utf-8"), Base64.NO_WRAP);
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
         }
+        requestAddress(toJSON(mMarsLocation));
         
         Log.d("LocationService", mMarsLocationCode);
       }
