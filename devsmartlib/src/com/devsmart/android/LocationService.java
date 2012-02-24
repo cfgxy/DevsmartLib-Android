@@ -282,7 +282,7 @@ public class LocationService extends Service {
         }
         requestAddress(toJSON(mMarsLocation));
         
-        Log.d("LocationService", mMarsLocationCode);
+        if(mMarsLocationCode != null) Log.d("LocationService", mMarsLocationCode);
       }
       
     }).start();
