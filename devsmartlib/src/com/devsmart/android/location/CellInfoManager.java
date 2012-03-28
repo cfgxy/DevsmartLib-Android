@@ -8,6 +8,7 @@ import android.telephony.CellLocation;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class CellInfoManager {  
@@ -96,7 +97,12 @@ public class CellInfoManager {
   
   public static int getMnc(Context mContext) {
     TelephonyManager manager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-    return Integer.valueOf(manager.getNetworkOperator().substring(3, 5));
+    String operator = manager.getNetworkOperator();
+    if(TextUtils.isEmpty(operator) || operator.length() < 5) {
+      return 0;
+    }
+    
+    return Integer.valueOf(operator.substring(3, 5));
   }
   
   

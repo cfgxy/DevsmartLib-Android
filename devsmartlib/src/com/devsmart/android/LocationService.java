@@ -23,6 +23,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.devsmart.android.location.CellInfo;
@@ -258,7 +259,6 @@ public class LocationService extends Service {
     
     Log.d("LocationService", "requestMars");
     
-    
     new Thread(new Runnable() {
 
       public void run() {
@@ -280,9 +280,13 @@ public class LocationService extends Service {
           mMarsLocationCode = Base64.encodeToString(toJSON(mMarsLocation).toJSONString().getBytes("utf-8"), Base64.NO_WRAP);
         } catch (Exception e) {
         }
-        requestAddress(toJSON(mMarsLocation));
         
-        if(mMarsLocationCode != null) Log.d("LocationService", mMarsLocationCode);
+        if(mMarsLocationCode == null) return;
+        
+        requestAddress(toJSON(mMarsLocation));
+        Log.d("LocationService", mMarsLocationCode);
+        
+        getApplicationContext().sendBroadcast(new Intent("cn.ahurls.intent.LOCATION_GPS_COMPLETE"));
       }
       
     }).start();
@@ -417,7 +421,10 @@ public class LocationService extends Service {
         if(jo == null) return;
         mAddress = jo.toJSONString();
         
+        if (TextUtils.isEmpty(mAddress)) return;
+
         Log.d("LocationService", mAddress);
+        getApplicationContext().sendBroadcast(new Intent("cn.ahurls.intent.LOCATION_ADDRESS_COMPLETE"));
       }
     }).start();
     
