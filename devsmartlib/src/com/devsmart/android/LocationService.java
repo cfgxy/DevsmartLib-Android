@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.devsmart.android.location.CellInfo;
 import com.devsmart.android.location.CellInfoManager;
@@ -257,7 +256,7 @@ public class LocationService extends Service {
     String params = "lat=" + ((Number)loc.get("lat")).doubleValue() + "&lng=" +  ((Number)loc.get("lng")).doubleValue();
     final HttpGet get = new HttpGet("http://365jia.cn/api/common/maps/get_mars.json?" + params);
     
-    Log.d("LocationService", "requestMars");
+    //Log.d("LocationService", "requestMars");
     
     new Thread(new Runnable() {
 
@@ -268,7 +267,7 @@ public class LocationService extends Service {
           
           HttpResponse  resp = client.execute(get);
           jo = (JSONObject) JSONValue.parse(new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8")));
-          Log.d("LocationService", jo.toJSONString());
+          //Log.d("LocationService", jo.toJSONString());
           jo = (JSONObject) jo.get("message");
         } catch (Exception e) {e.printStackTrace();}
         
@@ -284,7 +283,7 @@ public class LocationService extends Service {
         if(mMarsLocationCode == null) return;
         
         requestAddress(toJSON(mMarsLocation));
-        Log.d("LocationService", mMarsLocationCode);
+        //Log.d("LocationService", mMarsLocationCode);
         
         getApplicationContext().sendBroadcast(new Intent("cn.ahurls.intent.LOCATION_GPS_COMPLETE"));
       }
@@ -294,7 +293,7 @@ public class LocationService extends Service {
   }
 
 	private void requestGsmLocation() {
-    Log.d("LocationService", "requestGsmLocation");
+    //Log.d("LocationService", "requestGsmLocation");
 
 
     new Thread(new Runnable() {
@@ -324,7 +323,7 @@ public class LocationService extends Service {
         loc.setTime(new Date().getTime());
         mLocationListener.onLocationChanged(loc);
         
-        Log.d("LocationService", mLocationCode);
+        //Log.d("LocationService", mLocationCode);
       }
     }).start();
     
@@ -381,7 +380,7 @@ public class LocationService extends Service {
   }
   
   private void requestAddress(JSONObject loc1) {
-    Log.d("LocationService", "requestAddress");
+    //Log.d("LocationService", "requestAddress");
     
     final JSONObject loc = loc1;
 
@@ -423,7 +422,7 @@ public class LocationService extends Service {
         
         if (TextUtils.isEmpty(mAddress)) return;
 
-        Log.d("LocationService", mAddress);
+        //Log.d("LocationService", mAddress);
         getApplicationContext().sendBroadcast(new Intent("cn.ahurls.intent.LOCATION_ADDRESS_COMPLETE"));
       }
     }).start();
