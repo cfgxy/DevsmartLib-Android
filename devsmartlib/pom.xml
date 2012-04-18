@@ -5,7 +5,7 @@
   <properties>
     <android-platform>4</android-platform>
     <android-emulator>avd_dev</android-emulator>
-    <maven-android-plugin-version>3.0.0</maven-android-plugin-version>
+    <maven-android-plugin-version>3.1.1</maven-android-plugin-version>
     <maven-compiler-plugin-version>2.3.2</maven-compiler-plugin-version>
     <android-version>1.6_r2</android-version>
     <android.sdk.path>/android-sdk/</android.sdk.path>
