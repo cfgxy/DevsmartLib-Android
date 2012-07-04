@@ -85,7 +85,11 @@ public class LocationService extends Service {
     public void resume() throws RemoteException {
       started = true;
       mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
-      mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
+      try {
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
 
     
@@ -114,7 +118,11 @@ public class LocationService extends Service {
       mBestLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
     }
     if(mBestLocation == null) {
-      mBestLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+      try {
+        mBestLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
     if(mBestLocation != null) {
       requestMars(toJSON(mBestLocation));
@@ -124,8 +132,19 @@ public class LocationService extends Service {
       }
     }
     requestGsmLocation();
-    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
-    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
+    
+    try {
+      mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+
+    try {
+      mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 	}
 
 	private LocationListener mLocationListener = new LocationListener() {
