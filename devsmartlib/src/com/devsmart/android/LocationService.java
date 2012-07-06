@@ -84,7 +84,11 @@ public class LocationService extends Service {
 
     public void resume() throws RemoteException {
       started = true;
-      mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
+      try {
+        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
       try {
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
       } catch (Exception e) {
@@ -115,7 +119,11 @@ public class LocationService extends Service {
     mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
     mBestLocation = null;
     if(mBestLocation == null) {
-      mBestLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+      try {
+        mBestLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
     if(mBestLocation == null) {
       try {
