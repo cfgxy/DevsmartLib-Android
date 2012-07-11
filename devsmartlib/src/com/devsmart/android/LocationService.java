@@ -22,6 +22,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.text.TextUtils;
 
@@ -37,6 +38,8 @@ public class LocationService extends Service {
   private String mLocationCode;
   private String mMarsLocationCode;
   private boolean started;
+  private Object callbackLock = new Object();
+  private RemoteCallbackList<ILocationCallback> callbacks = new RemoteCallbackList<ILocationCallback>();
 
 	ILocationService.Stub mService = new ILocationService.Stub() {
 
@@ -94,6 +97,24 @@ public class LocationService extends Service {
       } catch (Exception e) {
         e.printStackTrace();
       }
+    }
+
+    @Override
+    public void registerCallback(ILocationCallback callback)
+        throws RemoteException {
+      if (callback == null) {
+        return;
+      }
+      callbacks.register(callback);
+    }
+
+    @Override
+    public void unregisterCallback(ILocationCallback callback)
+        throws RemoteException {
+      if (callback == null) {
+        return;
+      }
+      callbacks.unregister(callback);
     }
 
     
@@ -182,6 +203,19 @@ public class LocationService extends Service {
 	      mMarsLocation = null;
 	      mMarsLocationCode = null;
 	      mAddress = null;
+	      
+	      synchronized (callbackLock) {
+	        int n = callbacks.beginBroadcast();
+	        for (int i = 0; i < n; i++) {
+	          try {
+	            callbacks.getBroadcastItem(i).onLocationReturn(toJSON(mBestLocation).toJSONString());
+	          } catch (Exception e) {
+	            e.printStackTrace();
+	          }
+	        }
+	        callbacks.finishBroadcast();
+	      }
+	      
 				requestMars(toJSON(mBestLocation));
 			}
 
@@ -193,6 +227,7 @@ public class LocationService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		mLocationManager.removeUpdates(mLocationListener);
+		callbacks.kill();
 	}
 
 	private static final int TWO_MINUTES = 1000 * 60 * 2;
@@ -310,7 +345,19 @@ public class LocationService extends Service {
         if(mMarsLocationCode == null) return;
         
         requestAddress(toJSON(mMarsLocation));
-        //Log.d("LocationService", mMarsLocationCode);
+        
+
+        synchronized (callbackLock) {
+          int n = callbacks.beginBroadcast();
+          for (int i = 0; i < n; i++) {
+            try {
+              callbacks.getBroadcastItem(i).onMarsReturn(toJSON(mMarsLocation).toJSONString());
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+          callbacks.finishBroadcast();
+        }
         
         getApplicationContext().sendBroadcast(new Intent("cn.ahurls.intent.LOCATION_GPS_COMPLETE"));
       }
@@ -448,6 +495,19 @@ public class LocationService extends Service {
         mAddress = jo.toJSONString();
         
         if (TextUtils.isEmpty(mAddress)) return;
+        
+
+        synchronized (callbackLock) {
+          int n = callbacks.beginBroadcast();
+          for (int i = 0; i < n; i++) {
+            try {
+              callbacks.getBroadcastItem(i).onAddressReturn(mAddress);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
+          callbacks.finishBroadcast();
+        }
 
         //Log.d("LocationService", mAddress);
         getApplicationContext().sendBroadcast(new Intent("cn.ahurls.intent.LOCATION_ADDRESS_COMPLETE"));
