@@ -12,6 +12,12 @@
   </properties>
   
   
+  <parent>
+    <groupId>cn.ahurls</groupId>
+    <artifactId>android-base</artifactId>
+    <version>1.0</version>
+  </parent>
+  
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.devsmart</groupId>
   <artifactId>lib-devsmartlib-android</artifactId>
@@ -33,55 +39,4 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <sourceDirectory>src</sourceDirectory>
-    <finalName>${project.artifactId}</finalName>
-    <plugins>
-      <plugin>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>2.1</version>
-        <configuration>
-          <attach>true</attach>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven-compiler-plugin-version}</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-          <showWarnings>true</showWarnings>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-        <artifactId>android-maven-plugin</artifactId>
-        <version>${maven-android-plugin-version}</version>
-        <configuration>
-          <sdk>
-            <path>${env.ANDROID_HOME}</path>
-            <platform>${android-platform}</platform>
-          </sdk>
-          <emulator>
-            <avd>${android-emulator}</avd>
-          </emulator>
-          <deleteConflictingFiles>true</deleteConflictingFiles>
-          <undeployBeforeDeploy>false</undeployBeforeDeploy>
-        </configuration>
-        <extensions>true</extensions>
-      </plugin>
-
-    </plugins>
-	</build>
 </project>

@@ -99,7 +99,6 @@ public class LocationService extends Service {
       }
     }
 
-    @Override
     public void registerCallback(ILocationCallback callback)
         throws RemoteException {
       if (callback == null) {
@@ -108,7 +107,6 @@ public class LocationService extends Service {
       callbacks.register(callback);
     }
 
-    @Override
     public void unregisterCallback(ILocationCallback callback)
         throws RemoteException {
       if (callback == null) {
